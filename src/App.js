@@ -3,6 +3,11 @@ import Header from "./components/Header";
 import Footer from "./components/Footer";
 import Content from "./components/Content";
 import Website from "./components/Website";
+import FavColor from "./components/FavColor";
+import Counter from "./components/Counter";
+import Navbar from "./components/Navbar";
+import List from "./components/List";
+
 function App() {
   const webInfo = { page: "Home page", number: 1, content: "content" };
   const isWebsiteActive = true;
@@ -18,15 +23,16 @@ function App() {
   return (
     <>
       {/* <Header />*/}
-      <Content name="website" />
+      {/* <Content name="website" />
+
       {webInfo.page !== undefined || webInfo.number !== undefined ? (
         <Website webInfo={webInfo} />
       ) : null}
 
-      {/* {isWebsiteActive == false ? <h2>Active</h2> : <h2>Inactive</h2>} */}
-      {isWebsiteActive ? <h2>Active</h2> : <h2>Inactive</h2>}
+      {/* {isWebsiteActive == false ? <h2>Active</h2> : <h2>Inactive</h2>} 
+      {isWebsiteActive ? <h2>Active</h2> : <h2>Inactive</h2>} */}
 
-      <ul>
+      {/* <ul>
         {items.map((item) => (
           <li key={item.id}>
             {item.id}-{item.name}
@@ -34,7 +40,15 @@ function App() {
         ))}
       </ul>
 
-      <p style={{ color: "red", background: "yellow" }}>Inline Style</p>
+      <p style={{ color: "red", background: "yellow" }}>Inline Style</p> */}
+
+      <FavColor />
+
+      <Counter />
+      <Navbar />
+      <div>
+        <List />
+      </div>
 
       {/* <Footer /> */}
     </>
