@@ -7,6 +7,9 @@ import FavColor from "./components/FavColor";
 import Counter from "./components/Counter";
 import Navbar from "./components/Navbar";
 import List from "./components/List";
+import "bootstrap/dist/css/bootstrap.min.css";
+
+import Timer from "./components/Timer";
 
 function App() {
   const webInfo = { page: "Home page", number: 1, content: "content" };
@@ -42,12 +45,13 @@ function App() {
 
       <p style={{ color: "red", background: "yellow" }}>Inline Style</p> */}
 
-      <FavColor />
+      {/* <FavColor />
 
       <Counter />
-      <Navbar />
-      <div>
+      <Navbar /> */}
+      <div className="container">
         <List />
+        <Timer />
       </div>
 
       {/* <Footer /> */}

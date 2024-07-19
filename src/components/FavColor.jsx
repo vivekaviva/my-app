@@ -25,15 +25,15 @@ function FavColor() {
 
   return (
     <>
+      <p>Name : {name}</p>
       <p>Student name - {students.name}</p>
       <p>Time - {students.time}</p>
-
       <p>Batch - {students.batch}</p>
       <p>Domain - {students.Domain}</p>
       {/* <h3>Fav color is {color}</h3>
 
       <p>Name is {name}</p> */}
-      <button onClick={update}>Click ME</button>
+      <button onClick={update}>Update Students List</button>
     </>
   );
 }
