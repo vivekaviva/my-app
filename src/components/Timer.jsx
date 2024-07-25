@@ -13,6 +13,8 @@ function Timer() {
     // }, 1000);
   }, [count]);
 
+  // useEffect(()=>)
+
   function checkCount() {
     if (count > 10) {
       setCount(1);
@@ -34,6 +36,7 @@ function Timer() {
       <h3>useEffect</h3>
       <p>Count {count}</p>
       <button onClick={updateCount}>Inc Count</button>
+      {/* {count > 10 ? <p>Count exceeds</p> : null} */}
       <button onClick={reset}>Reset</button>
     </>
   );
