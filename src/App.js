@@ -1,62 +1,53 @@
 import "./App.css";
-// import Header from "./components/Header";
-// import Footer from "./components/Footer";
-// import Content from "./components/Content";
-// import Website from "./components/Website";
-// import FavColor from "./components/FavColor";
-// import Counter from "./components/Counter";
-// import Navbar from "./components/Navbar";
-// import List from "./components/List";
+
 import Form from "./components/Form";
 import "bootstrap/dist/css/bootstrap.min.css";
-
-//import Timer from "./components/Timer";
+import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import Home from "./pages/Home";
+import About from "./pages/About";
+import User from "./pages/User";
+import Student1 from "./pages/Student1";
+import Student2 from "./pages/Student2";
 
 function App() {
-  // const webInfo = { page: "Home page", number: 1, content: "content" };
-  // const isWebsiteActive = true;
-  // const webInfo = {};
-
-  //const nums = [1, 2, 3, 4, 5, 5, 5];
-  // const items = [
-  //   { id: 1, name: "Apple", color: "Red" },
-  //   { id: 2, name: "Banana", color: "Yellow" },
-  //   { id: 3, name: "Cherry", color: "Red" },
-  // ];
-
   return (
     <>
-      {/* <Header />*/}
-      {/* <Content name="website" />
-
-      {webInfo.page !== undefined || webInfo.number !== undefined ? (
-        <Website webInfo={webInfo} />
-      ) : null}
-
-      {/* {isWebsiteActive == false ? <h2>Active</h2> : <h2>Inactive</h2>} 
-      {isWebsiteActive ? <h2>Active</h2> : <h2>Inactive</h2>} */}
-
-      {/* <ul>
-        {items.map((item) => (
-          <li key={item.id}>
-            {item.id}-{item.name}
-          </li>
-        ))}
-      </ul>
-
-      <p style={{ color: "red", background: "yellow" }}>Inline Style</p> */}
-
-      {/* <FavColor />
-
-      <Counter />
-      <Navbar /> */}
       <div className="container">
-        {/* <List />
-        <Timer /> */}
-        <Form />
-      </div>
+        <Router>
+          {/* <ul>
+            <li>
+              <Link to="/">Home</Link>
+            </li>
+            <li>
+              <Link to="/about">About</Link>
+            </li>
 
-      {/* <Footer /> */}
+            <li>
+              <Link to="/user/1">User 1</Link>
+            </li>
+            <li>
+              <Link to="/user/27">User 2</Link>
+            </li>
+            <li>
+              <Link to="/user/288">User 288</Link>
+            </li>
+          </ul> */}
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/students">
+              <Route path="student1" element={<Student1 />} />
+              <Route path="student2" element={<Student2 />} />
+            </Route>
+
+            <Route path="/about" element={<About />} />
+
+            <Route path="/user">
+              <Route path=":ids" element={<User />}></Route>
+            </Route>
+          </Routes>
+        </Router>
+      </div>
     </>
   );
 }
