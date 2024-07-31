@@ -2,21 +2,21 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
+// npm i react-toastify
 
 export default function About() {
   const [users, setUsers] = useState([]);
-  const [submittedValue, setSUbmittedValue] = useState(null);
-  const [errors, setErrors] = useState({});
 
-  // const [formData, setFormData] = useState({
-  //   name: "",
-  //   password: "",
-  //   email: "",
-  // });
+  const [errors, setErrors] = useState({});
 
   const [newName, setNewName] = useState("");
   const [newEmail, setNewEmail] = useState("");
   const [newPhone, setNewPhone] = useState("");
+
+  const [editUserId, setEditUserId] = useState(null);
 
   useEffect(() => {
     axios
@@ -34,6 +34,9 @@ export default function About() {
   };
 
   function addUsers() {
+    setEditUserId(null);
+    setNewName("");
+    setNewEmail("");
     setShowModal(true);
   }
 
@@ -76,34 +79,71 @@ export default function About() {
     event.preventDefault();
     const name = newName.trim();
     const email = newEmail.trim();
-    const phone = newPhone.trim();
 
-    if (name && email && phone) {
-      const maxId =
-        users.length > 0 ? Math.max(...users.map((user) => user.id)) : 0;
-      const newId = maxId + 1;
-      const newUser = {
-        id: newId,
-        name,
-        email,
-        phone,
-      };
-      axios
-        .post("https://jsonplaceholder.typicode.com/users", newUser)
-        .then((response) => {
-          console.log("response of post method", response);
-          setUsers([...users, newUser]);
-          setNewName("");
-          setNewEmail("");
-          setNewPhone("");
-          setShowModal(false);
-        })
-        .catch((error) => console.log("error", error));
+    if (name && email) {
+      if (editUserId) {
+        axios
+          .put(`https://jsonplaceholder.typicode.com/users/${editUserId}`, {
+            name,
+            email,
+          })
+          .then((response) => {
+            setUsers(
+              users.map((user) =>
+                user.id === editUserId ? { ...user, name, email } : user
+              )
+            );
+            setEditUserId(null);
+            setNewName("");
+            setNewEmail("");
+            setShowModal(false);
+            toast.success("User Updated");
+          })
+          .catch((error) => {
+            toast.error("Failed to updated the user");
+          });
+      } else {
+        const maxId =
+          users.length > 0 ? Math.max(...users.map((user) => user.id)) : 0;
+        const newId = maxId + 1;
+        const newUser = {
+          id: newId,
+          name,
+          email,
+        };
+        axios
+          .post("https://jsonplaceholder.typicode.com/users", newUser)
+          .then((response) => {
+            console.log("response of post method", response);
+            setUsers([...users, newUser]);
+            setNewName("");
+            setNewEmail("");
+
+            setShowModal(false);
+            toast.success("User added successfully!");
+          })
+          .catch(
+            (error) => (
+              console.log("error", error), toast.error("Failed to add the user")
+            )
+          );
+      }
     }
+  };
+
+  const UpdateUser = (user) => {
+    console.log("update button clicked", user);
+    setEditUserId(user.id);
+    setNewName(user.name);
+    setNewEmail(user.email);
+
+    setShowModal(true);
   };
 
   return (
     <>
+      <ToastContainer />
+
       <div className="container mt-5">
         <h3>Users List - About</h3>
         <button onClick={addUsers} className="btn btn-primary">
@@ -115,19 +155,24 @@ export default function About() {
               <th>#</th>
               <th>Name</th>
               <th>Email</th>
-              <th>Phone</th>
+
               <th>Action</th>
             </tr>
           </thead>
           <tbody>
             {users.map((user) => (
-              <tr>
+              <tr key={user.id}>
                 <td>{user.id}</td>
                 <td>{user.name}</td>
                 <td>{user.email}</td>
-                <td>{user.phone}</td>
+
                 <td>
-                  <button className="btn btn-primary">Update</button>
+                  <button
+                    className="btn btn-primary"
+                    onClick={() => UpdateUser(user)}
+                  >
+                    Update
+                  </button>
                 </td>
               </tr>
             ))}
@@ -137,7 +182,9 @@ export default function About() {
 
       <Modal show={showModal} onHide={handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title>Add New User</Modal.Title>
+          <Modal.Title>
+            {editUserId ? "Update User" : "Add New User"}
+          </Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <form onSubmit={handleSubmit}>
@@ -150,6 +197,7 @@ export default function About() {
                 // className="form-control"
                 className={`form-control ${errors.name ? "is-invalid" : ""}`}
                 id="name"
+                value={newName}
                 name="name"
                 onChange={handleChanges}
               />
@@ -165,6 +213,7 @@ export default function About() {
                 className={`form-control ${errors.email ? "is-invalid" : ""}`}
                 type="email"
                 name="email"
+                value={newEmail}
                 id="email"
                 onChange={handleChanges}
               />
@@ -172,7 +221,7 @@ export default function About() {
                 <div className="invalid-feedback">{errors.email}</div>
               )}
             </div>
-            <div className="mb-3">
+            {/* <div className="mb-3">
               <label htmlFor="phone" className="form-label">
                 Phone number
               </label>
@@ -181,14 +230,15 @@ export default function About() {
                 type="number"
                 name="phone"
                 id="phone"
+                value={newPhone}
                 onChange={handleChanges}
               />
               {errors.phone && (
                 <div className="invalid-feedback">{errors.phone}</div>
               )}
-            </div>
+            </div> */}
             <button className="btn btn-primary" type="submit">
-              Submit
+              {editUserId ? "Update User" : "Add new user"}
             </button>
           </form>
         </Modal.Body>
