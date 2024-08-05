@@ -14,7 +14,6 @@ export default function About() {
 
   const [newName, setNewName] = useState("");
   const [newEmail, setNewEmail] = useState("");
-  const [newPhone, setNewPhone] = useState("");
 
   const [editUserId, setEditUserId] = useState(null);
 
@@ -29,6 +28,7 @@ export default function About() {
   }, []);
 
   const [showModal, setShowModal] = useState(false);
+
   const handleClose = () => {
     setShowModal(false);
   };
@@ -40,27 +40,6 @@ export default function About() {
     setShowModal(true);
   }
 
-  const validateForm = (d) => {
-    console.log("data", d);
-    const newErrors = {};
-    const passwordPattern =
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
-    if (!d.username) newErrors.username = "Username is required";
-    if (!d.password) {
-      newErrors.password = "Password is required";
-    } else if (!passwordPattern.test(d.password)) {
-      newErrors.password = "Password is invalid";
-    }
-
-    if (!d.email) {
-      newErrors.email = "Email is required";
-    } else if (!/\S+@\S+\.\S+/.test(d.email)) {
-      newErrors.email = "Email is invalid";
-    }
-
-    return newErrors;
-  };
-
   const handleChanges = (event) => {
     const { name, value } = event.target;
 
@@ -69,9 +48,6 @@ export default function About() {
     }
     if (name === "email") {
       setNewEmail(value);
-    }
-    if (name === "phone") {
-      setNewPhone(value);
     }
   };
 
@@ -136,8 +112,22 @@ export default function About() {
     setEditUserId(user.id);
     setNewName(user.name);
     setNewEmail(user.email);
-
     setShowModal(true);
+  };
+
+  const deleteUser = (userID) => {
+    console.log("Delete button clicked", userID);
+    axios
+      .delete(`https://jsonplaceholder.typicode.com/users/${userID}`)
+
+      .then((response) => {
+        setUsers(users.filter((user) => user.id !== userID));
+        toast.success("User deleted");
+      })
+      .catch((err) => {
+        console.log("error while deleting the user");
+        toast.error("Failed to delete the user");
+      });
   };
 
   return (
@@ -173,6 +163,12 @@ export default function About() {
                   >
                     Update
                   </button>
+                  <button
+                    onClick={() => deleteUser(user.id)}
+                    className="ms-2 btn btn-warning"
+                  >
+                    Delete
+                  </button>
                 </td>
               </tr>
             ))}
@@ -198,6 +194,7 @@ export default function About() {
                 className={`form-control ${errors.name ? "is-invalid" : ""}`}
                 id="name"
                 value={newName}
+                // value="viveka"
                 name="name"
                 onChange={handleChanges}
               />
