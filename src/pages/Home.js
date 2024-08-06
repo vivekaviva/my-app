@@ -97,6 +97,18 @@ export default function Home() {
     setShowModal(true);
   };
 
+  const deleteUser = (id) => {
+    console.log("Delete ", id);
+    fetch(`https://jsonplaceholder.typicode.com/users/${id}`, {
+      method: "DELETE",
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setUsers(users.filter((user) => user.id !== id));
+      })
+      .catch((error) => console.log("error while deleting the user", error));
+  };
+
   return (
     <div className="container mt-5">
       <h3>Users List - Home page</h3>
@@ -124,6 +136,12 @@ export default function Home() {
                   onClick={() => updateUser(user)}
                 >
                   Update
+                </button>
+                <button
+                  className="btn btn-warning"
+                  onClick={() => deleteUser(user.id)}
+                >
+                  Delete
                 </button>
               </td>
             </tr>
