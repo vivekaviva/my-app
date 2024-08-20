@@ -8,13 +8,19 @@ import About from "./pages/About";
 import User from "./pages/User";
 import Student1 from "./pages/Student1";
 import Student2 from "./pages/Student2";
+import Parent from "./components/context";
+import BlogPost from "./components/BlogPost";
+import ProductsPage from "./components/ProductsPage";
 
 function App() {
   return (
     <>
       <div className="container">
-        <Router>
-          {/* <ul>
+        {/* <Parent /> */}
+        {/* <BlogPost /> */}
+        <ProductsPage />
+        {/* <Router> */}
+        {/* <ul>
             <li>
               <Link to="/">Home</Link>
             </li>
@@ -32,7 +38,7 @@ function App() {
               <Link to="/user/288">User 288</Link>
             </li>
           </ul> */}
-          <Routes>
+        {/* <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/about" element={<About />} />
             <Route path="/students">
@@ -46,7 +52,7 @@ function App() {
               <Route path=":ids" element={<User />}></Route>
             </Route>
           </Routes>
-        </Router>
+        </Router> */}
       </div>
     </>
   );
